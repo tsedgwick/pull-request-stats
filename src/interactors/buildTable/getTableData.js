@@ -18,7 +18,14 @@ const noParse = (value) => value;
 
 const generateChart = (percentage = 0) => {
   const length = Math.round(percentage * CHART_MAX_LENGTH);
-  return Array(length).fill(CHART_CHARACTER).join('');
+  if (length <= 0) {
+    return '';
+  }
+  try {
+    return Array(length).fill(CHART_CHARACTER).join('');
+  } catch {
+    return '';
+  }
 };
 
 const getChartsData = ({ index, contributions, displayCharts }) => {
@@ -30,6 +37,13 @@ const getChartsData = ({ index, contributions, displayCharts }) => {
     timeStr: addBr(generateChart(contributions.timeToReview)),
     reviewsStr: addBr(generateChart(contributions.totalReviews)),
     commentsStr: addBr(generateChart(contributions.totalComments)),
+    additionsStr: addBr(generateChart(contributions.additions)),
+    deletionsStr: addBr(generateChart(contributions.deletions)),
+    changedFilesStr: addBr(generateChart(contributions.changedFiles)),
+    totalCommentsOnOwnPRStr: addBr(generateChart(contributions.totalCommentsOnOwnPR)),
+    numberOfReviewersStr: addBr(generateChart(contributions.numberOfReviewers)),
+    timeToMergeStr: addBr(generateChart(contributions.timeToMerge)),
+    totalPRsStr: addBr(generateChart(contributions.totalPRs)),
   };
 };
 
@@ -78,6 +92,14 @@ module.exports = ({
     const timeStr = addReviewsTimeLink(timeVal, disableLinks, urls.timeToReview);
     const reviewsStr = printStat(stats, 'totalReviews', noParse);
     const commentsStr = printStat(stats, 'totalComments', noParse);
+    const additionsStr = printStat(stats, 'additions', noParse);
+    const deletionsStr = printStat(stats, 'deletions', noParse);
+    const changedFilesStr = printStat(stats, 'changedFiles', noParse);
+    const totalCommentsOnOwnPRStr = printStat(stats, 'totalCommentsOnOwnPR', noParse);
+    const numberOfReviewersStr = printStat(stats, 'numberOfReviewers', noParse);
+    const timeToMergeVal = printStat(stats, 'timeToMerge', durationToString);
+    const timeToMergeStr = addReviewsTimeLink(timeToMergeVal, disableLinks, urls.timeToReview);
+    const totalPRsStr = printStat(stats, 'totalPRs', noParse);
 
     return {
       avatar,
@@ -85,6 +107,13 @@ module.exports = ({
       timeToReview: `${timeStr}${chartsData.timeStr}`,
       totalReviews: `${reviewsStr}${chartsData.reviewsStr}`,
       totalComments: `${commentsStr}${chartsData.commentsStr}`,
+      additions: `${additionsStr}${chartsData.additionsStr}`,
+      deletions: `${deletionsStr}${chartsData.deletionsStr}`,
+      changedFiles: `${changedFilesStr}${chartsData.changedFilesStr}`,
+      totalCommentsOnOwnPR: `${totalCommentsOnOwnPRStr}${chartsData.totalCommentsOnOwnPRStr}`,
+      numberOfReviewers: `${numberOfReviewersStr}${chartsData.numberOfReviewersStr}`,
+      timeToMerge: `${timeToMergeStr}${chartsData.timeToMergeStr}`,
+      totalPRs: `${totalPRsStr}${chartsData.totalPRsStr}`,
     };
   };
 
@@ -102,6 +131,13 @@ module.exports = ({
       timeToReview: t('table.columns.timeToReview'),
       totalReviews: t('table.columns.totalReviews'),
       totalComments: t('table.columns.totalComments'),
+      additions: t('table.columns.additions'),
+      deletions: t('table.columns.deletions'),
+      changedFiles: t('table.columns.changedFiles'),
+      totalCommentsOnOwnPR: t('table.columns.totalCommentsOnOwnPR'),
+      numberOfReviewers: t('table.columns.numberOfReviewers'),
+      timeToMerge: t('table.columns.timeToMerge'),
+      totalPRs: t('table.columns.totalPRs'),
     };
 
     return [

@@ -17,6 +17,15 @@ const PRS_QUERY = `
                 author { ...ActorFragment }
               }
             }
+            additions
+            deletions
+            changedFiles
+            commits {
+              totalCount
+            }
+            totalCommentsCount
+            mergedAt
+            createdAt    
           }
         }
       }

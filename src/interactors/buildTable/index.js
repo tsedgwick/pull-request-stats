@@ -10,6 +10,7 @@ module.exports = ({
 }) => {
   const execute = () => {
     const allStats = reviewers.map((r) => r.stats);
+    // console.log(JSON.stringify(allStats));
     const bests = calculateBests(allStats);
 
     const tableData = getTableData({
